@@ -1,6 +1,5 @@
 package com.reserveme.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Data
-@AllArgsConstructor
 public class Store {
 
     @Id
@@ -32,4 +30,16 @@ public class Store {
     private Integer appointmentCapacity;
     private Duration appointmentForerun;
     private Duration appointmentDuration;
+
+    public Store(String name, String street, String houseNumber, String postcode, String city, Integer reservedCapacity, Integer appointmentCapacity, Duration appointmentDuration, Duration appointmentForerun) {
+        this.name = name;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.postcode = postcode;
+        this.city = city;
+        this.reservedCapacity = reservedCapacity;
+        this.appointmentCapacity = appointmentCapacity;
+        this.appointmentDuration = appointmentDuration;
+        this.appointmentForerun = appointmentForerun;
+    }
 }
