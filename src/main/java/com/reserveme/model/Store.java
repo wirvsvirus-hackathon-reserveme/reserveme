@@ -31,6 +31,10 @@ public class Store {
     private Duration appointmentForerun;
     private Duration appointmentDuration;
 
+    public Store() {
+
+    }
+
     public Store(String name, String street, String houseNumber, String postcode, String city, Integer reservedCapacity, Integer appointmentCapacity, Duration appointmentDuration, Duration appointmentForerun) {
         this.name = name;
         this.street = street;
