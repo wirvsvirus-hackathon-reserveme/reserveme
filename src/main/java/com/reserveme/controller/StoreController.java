@@ -1,9 +1,10 @@
 package com.reserveme.controller;
 
 import com.reserveme.model.Store;
-import com.reserveme.response.StoreAddResponse;
 import com.reserveme.service.StoreService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +39,8 @@ public class StoreController {
     */
 
     @PostMapping
-    public StoreAddResponse addStore(@RequestBody Store store) {
+    public ResponseEntity<Store> addStore(@RequestBody Store store) {
         log.info("Received request to add store {}", store);
-        return new StoreAddResponse(storeService.addStore(store));
+        return new ResponseEntity<>(storeService.addStore(store), HttpStatus.ACCEPTED);
     }
 }
