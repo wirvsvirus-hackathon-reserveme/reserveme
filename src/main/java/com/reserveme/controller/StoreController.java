@@ -1,14 +1,16 @@
 package com.reserveme.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reserveme.model.Store;
 import com.reserveme.service.StoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -18,9 +20,12 @@ public class StoreController {
     static final String ENDPOINT = "/store";
 
     private final StoreService storeService;
+    private final ObjectMapper objectMapper;
 
-    public StoreController(StoreService storeService) {
+    public StoreController(StoreService storeService, ObjectMapper objectMapper) {
         this.storeService = storeService;
+        this.objectMapper = objectMapper;
+        this.objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true);
     }
 
     /*
@@ -38,9 +43,15 @@ public class StoreController {
         }
     */
 
-    @PostMapping
-    public ResponseEntity<Store> addStore(@RequestBody Store store) {
-        log.info("Received request to add store {}", store);
-        return new ResponseEntity<>(storeService.addStore(store), HttpStatus.ACCEPTED);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addStore(@RequestBody String json) {
+        try {
+            log.info("Received request to create store from JSON {}", json);
+            Store store = this.objectMapper.readValue(json, Store.class);
+            return new ResponseEntity<>(storeService.addStore(store), HttpStatus.ACCEPTED);
+        } catch (JsonProcessingException e) {
+            log.debug("Required JSON attribute(s) missing in {}", json);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Some of the required JSON attribute(s) are missing in your request body");
+        }
     }
 }
