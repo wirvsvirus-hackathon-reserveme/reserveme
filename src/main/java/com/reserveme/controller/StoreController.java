@@ -22,6 +22,21 @@ public class StoreController {
         this.storeService = storeService;
     }
 
+    /*
+        Post following json to localhost:8080/store
+        {
+            "name": "Budnikowski",
+            "street": "Hummelsbüttler Hauptstraße",
+            "houseNumber": "62",
+            "postcode": "22339",
+            "city": "Hamburg",
+            "reservedCapacity": 5,
+            "appointmentCapacity": 10,
+            "appointmentForerun": "P1D",
+            "appointmentDuration": "PT15M"
+        }
+    */
+
     @PostMapping
     public StoreAddResponse addStore(@RequestBody Store store) {
         log.info("Received request to add store {}", store);
