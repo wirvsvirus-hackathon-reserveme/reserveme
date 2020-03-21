@@ -17,7 +17,17 @@ public class StoreService {
 
     public Store addStore(Store store) {
         storeRepository.save(store);
-        log.info("Saved new store with UUID {}", store.getUuid());
+        log.debug("Saved new store with UUID {}", store.getUuid());
         return store;
+    }
+
+    public Iterable<Store> getStoresByCity(String city) {
+        log.debug("Looking up stores in city {}", city);
+        return storeRepository.findAllByCity(city);
+    }
+
+    public Iterable<Store> getStoresByPostcode(String postcode) {
+        log.debug("Looking up stores with postcode {}", postcode);
+        return storeRepository.findAllByPostcode(postcode);
     }
 }
