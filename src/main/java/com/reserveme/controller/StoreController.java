@@ -54,4 +54,18 @@ public class StoreController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Some of the required JSON attribute(s) are missing in your request body");
         }
     }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/city/{city}")
+    public ResponseEntity<Iterable<Store>> getStoresByCity(@PathVariable("city") String city) {
+        log.info("Received request to return stores in city {}", city);
+        return new ResponseEntity<>(storeService.getStoresByCity(city), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/postcode/{postcode}")
+    public ResponseEntity<Iterable<Store>> getStoresByPostcode(@PathVariable("postcode") String postcode) {
+        log.info("Received request to return stores with postcode {}", postcode);
+        return new ResponseEntity<>(storeService.getStoresByPostcode(postcode), HttpStatus.ACCEPTED);
+    }
 }
